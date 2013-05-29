@@ -3,7 +3,7 @@ require 'mobile'
 Ubo = Mobile:subclass('Ubo')
 
 function Ubo:initialize(grid,x,y)
-	Mobile.initialize(self,grid,75,x,y)
+	Mobile.initialize(self,grid,80,x,y)
 
 	self.sx = math.random(0,1)*2-1
 	self.sy = math.random(0,1)*2-1

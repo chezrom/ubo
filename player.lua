@@ -4,7 +4,7 @@ Player = Mobile:subclass('Player')
 
 
 function Player:initialize(grid,x,y)
-	Mobile.initialize(self,grid,30,x,y)
+	Mobile.initialize(self,grid,60,x,y)
 	
 	self.dir=1
 	self.move=false
