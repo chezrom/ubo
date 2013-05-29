@@ -2,6 +2,7 @@ require 'lib/middleclass'
 require 'player'
 require 'ubo'
 require 'grid'
+require 'caption'
 
 Stateful= require 'lib/stateful'
 
@@ -20,25 +21,22 @@ function Transition:update(dt)
 	end
 end
 
+function Transition:draw()
+	self.grid:draw()
+	self.caption:draw()
+end
+
 function Game:initialize()
 	self.delay=Game.TRANSITION_DELAY
 	self.level=1
 	self.grid = Grid(20)
-	self.grid:startLevel(self.level)	
+	self.grid:startLevel(self.level)
+	self.caption=Caption(Game.font)
 end
 
 
 function Game:draw()
-
-	love.graphics.setColor(120,120,120)
-	love.graphics.rectangle('fill',0,0,love.graphics.getWidth(),self.grid.start_y)
-	
-	love.graphics.setFont(Game.font)
-	love.graphics.setColor(Game.color)
-	love.graphics.print(string.format('LEVEL %2d : %2d %% FILLED',self.grid.level,self.grid.percent),20,0)
-
 	self.grid:draw()
-
 end
 
 function Game:update(dt)
@@ -46,6 +44,9 @@ function Game:update(dt)
 	if self.grid:isFinished() then
 		if self.grid:isSuccess() then
 			self.level = self.level + 1
+			self.caption:setLines("LEVEL COMPLETED","GO TO NEXT LEVEL")
+		else
+			self.caption:setLines("LEVEL FAILED",self.grid.event,"RESTART LEVEL")
 		end
 		self.delay = Game.TRANSITION_DELAY
 		self:gotoState('Transition')

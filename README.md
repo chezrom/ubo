@@ -1,5 +1,5 @@
 
-UBO (Unknown Bouncing Object) is a minimalist clone of Qix.
+UBO (Unknown Bouncing Objects) is a minimalist clone of Qix.
 
 The idea comes from the Ludum Dare 26 (April 2013) where 'miniQix' was posted by Wiering.
 MiniQix (http://www.wieringsoftware.nl/ld/miniqix/) is a javascript program, is simple and addictive to play, but have
