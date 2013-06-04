@@ -189,7 +189,7 @@ function Game:initialize()
 	
 	self.caption=Caption(Game.font)
 	self.menu=Caption(Game.menuFont)
-	self.videoMenu=Caption(Game.menuFont)
+	self.videoMenu=Caption(Game.font)
 	self.level=1
 	self.grid:startLevel(self.level)
 	
