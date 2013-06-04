@@ -2,6 +2,12 @@ require 'mobile'
 
 Player = Mobile:subclass('Player')
 
+Player.static.directions = {
+	{0,-1},
+	{0,1},
+	{1,0},
+	{-1,0}
+}
 
 function Player:initialize(grid,x,y)
 	Mobile.initialize(self,grid,60,x,y)
@@ -28,38 +34,40 @@ function Player:update(dt)
 				return
 			end
 		end
+
+		local newdir = 0
+		
 		if love.keyboard.isDown("up") then
 			if self.y > 1 then
-				self.y = self.y - 1
-				self.grid_y = self.grid_y - Grid.size
-				self.sy = -1
-				self.move = true
-				self.dir=1
+				newdir = 1
 			end
 		elseif love.keyboard.isDown("down") then
 			if self.y < self.grid.hgrid then
-				self.y = self.y + 1
-				self.grid_y = self.grid_y + Grid.size
-				self.sy = 1
-				self.move = true
-				self.dir=2
+				newdir = 2
 			end
 		elseif love.keyboard.isDown("left") then
 			if self.x > 1 then
-				self.x = self.x - 1
-				self.grid_x = self.grid_x - Grid.size
-				self.sx = -1
-				self.move = true
-				self.dir=4
+				newdir = 4
 			end
 		elseif love.keyboard.isDown("right") then
 			if self.x < self.grid.wgrid then
-				self.x = self.x + 1
-				self.grid_x = self.grid_x + Grid.size
-				self.sx = 1
-				self.move = true
-				self.dir=3
+				newdir=3
 			end
+		end
+		if newdir ~= 0 then
+			local deltaX,deltaY = Player.directions[newdir][1],Player.directions[newdir][2]
+			self.x = self.x + deltaX
+			self.y = self.y + deltaY
+			self.grid_x = self.grid_x + deltaX * Grid.size
+			self.grid_y = self.grid_y + deltaY * Grid.size
+			if deltaX ~= 0 then
+				self.sx = deltaX
+			end
+			if deltaY ~= 0 then
+				self.sy = deltaY
+			end
+			self.dir = newdir
+			self.move = true
 		end
 		if self.move and self.grid:isTail(self.x,self.y) then
 				self.grid:setEvent(Grid.EVENT_SELF_HIT_TAIL)
