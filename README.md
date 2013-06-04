@@ -10,3 +10,5 @@ I use middleclass and statefull to have a clear code. I use minimalist graphic a
 
 To play : you must claimed 75% of the area. When building you are vulnerable. And you must not hit a wall in construction.
 Each new level add another enemie or "UBO".
+
+See also topic on Löve forum : https://www.love2d.org/forums/viewtopic.php?f=5&t=34741 
