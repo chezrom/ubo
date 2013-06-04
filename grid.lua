@@ -9,7 +9,7 @@ Grid.static.size = 16
 Grid.static.EVENT_CLOSE = "close"
 Grid.static.EVENT_SELF_HIT_TAIL = "YOU HIT THE UNFISHED WALL"
 Grid.static.EVENT_SELF_HIT_UBO  = "selfhitubo"
-Grid.static.EVENT_UBO_HIT_TAIL  = "AN UBO HIT THE UNFISHED WALL"
+Grid.static.EVENT_UBO_HIT_TAIL  = "AN UBO HITS THE UNFISHED WALL"
 
 function Grid:initialize(ymin)
 	
@@ -20,7 +20,7 @@ function Grid:initialize(ymin)
 	self.start_x = 0
 	
 	self.map={}
-	self.player={}
+	self.player=nil
 	self.ubos={}
 	self.spriteBatch = love.graphics.newSpriteBatch(Grid.image,self.hgrid*self.wgrid)
 
@@ -57,10 +57,7 @@ function Grid:getScreenCoord(x,y)
 	return (x-1)*Grid.size + self.start_x,(y-1)*Grid.size + self.start_y
 end
 
-function Grid:startLevel(level)
-	--game_state.label = string.format('LEVEL %d',nqix)
-	self.level = level
-	
+function Grid:_initMap()
 	for y=1,self.hgrid do
 		self.map[y]={}
 		for x=1,self.wgrid do
@@ -73,13 +70,31 @@ function Grid:startLevel(level)
 			end
 		end
 	end
+end
+
+function Grid:_initUbos(nb)
+	self.ubos = {}
+	for i=1,nb do
+		self.ubos[i] = Ubo(self,math.random(3,self.wgrid-3),math.random(3,self.hgrid-3))
+	end
+end
+
+function Grid:startMain()
+	self:_initMap()
+	self:_initUbos(math.random(6,15))
+	self:buildBatch()
+	self.active=true
+end
+
+function Grid:startLevel(level)
+	--game_state.label = string.format('LEVEL %d',nqix)
+	self.level = level
+	
+	self:_initMap()
+	self:_initUbos(level)
 
 	self.player = Player(self,math.floor(self.wgrid/2),self.hgrid)
 	
-	self.ubos = {}
-	for i=1,level do
-		self.ubos[i] = Ubo(self,math.random(3,self.wgrid-3),math.random(3,self.hgrid-3))
-	end
 
 	self:buildBatch()
 	self.active=true
@@ -93,10 +108,11 @@ function Grid:draw()
 	love.graphics.setColor(120,120,120)
 	love.graphics.rectangle('fill',0,0,love.graphics.getWidth(),self.start_y)
 	
-	love.graphics.setFont(Game.font)
-	love.graphics.setColor(Game.color)
-	love.graphics.print(string.format('LEVEL %2d : %2d %% CLAIMED',self.level,self.percent),20,0)
-
+	if self.player then
+		love.graphics.setFont(Game.font)
+		love.graphics.setColor(Game.color)
+		love.graphics.print(string.format('LEVEL %2d : %2d %% CLAIMED',self.level,self.percent),20,0)
+	end
 
 	love.graphics.setColor(Grid.backgroundColor)
 	love.graphics.rectangle('fill',self.start_x,self.start_y,self.wgrid*Grid.size,self.hgrid*Grid.size)
@@ -108,7 +124,9 @@ function Grid:draw()
 		self.ubos[iq]:draw()
 	end
 
-	self.player:draw()
+	if self.player then
+		self.player:draw()
+	end
 end
 
 function Grid:placeTail(x,y)
@@ -141,7 +159,9 @@ function Grid:update(dt)
 		return
 	end
 	self.event = nil
-	self.player:update(dt)
+	if self.player then
+		self.player:update(dt)
+	end
 	if self.event and self:treatEvent() then
 		return
 	end

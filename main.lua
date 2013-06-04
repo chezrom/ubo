@@ -1,6 +1,7 @@
 require 'game'
 
 function love.load()
+	--love.mouse.setVisible(false)
 	Game:load(12)
 	game = Game()
 end
@@ -39,7 +40,9 @@ end
 
 
 function love.keypressed(key)
-	if key == "escape" then
+	game:keypressed(key)
+	--[[if key == "escape" then
 		love.event.push("quit")
 	end
+	--]]
 end
