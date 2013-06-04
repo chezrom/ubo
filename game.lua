@@ -25,11 +25,7 @@ function InteruptState:draw()
 	self.menu:draw()
 end
 
-function InteruptState:keypressed(key)
-	if key == "escape" then
-		love.event.push("quit")
-	end
-	self.menu:keypressed(key)
+function InteruptState:doMenuAction()
 	local choice = self.menu.selected
 	if choice == 1 then
 		self:popState('Interupt')
@@ -38,6 +34,19 @@ function InteruptState:keypressed(key)
 	elseif choice == 3 then
 		love.event.push("quit")
 	end
+end
+
+function InteruptState:keypressed(key)
+	if key == "escape" then
+		love.event.push("quit")
+	end
+	self.menu:keypressed(key)
+	self:doMenuAction()
+end
+
+function InteruptState:mousepressed(x,y,b)
+	self.menu:mousepressed(x,y,b)
+	self:doMenuAction()
 end
 
 local SelectVideoState = Game:addState('Video')
@@ -76,11 +85,7 @@ function SelectVideoState:draw()
 	self.videoMenu:draw()
 end
 
-function SelectVideoState:keypressed(key)
-	if key == "escape" then
-		self:popState('Video')
-	end
-	self.videoMenu:keypressed(key)
+function SelectVideoState:doMenuAction(key)
 	local choice = self.videoMenu.selected
 	if choice > #self.videoModes then
 		self:popState('Video')
@@ -96,6 +101,19 @@ function SelectVideoState:keypressed(key)
 			self.videoMenu.selected=0
 		end
 	end
+end
+
+function SelectVideoState:keypressed(key)
+	if key == "escape" then
+		self:popState('Video')
+	end
+	self.videoMenu:keypressed(key)
+	self:doMenuAction()
+end
+
+function SelectVideoState:mousepressed(x,y,b)
+	self.videoMenu:mousepressed(x,y,b)
+	self:doMenuAction()
 end
 
 local MenuState = Game:addState('Menu')
@@ -119,11 +137,7 @@ function MenuState:draw()
 	self.menu:draw()
 end
 
-function MenuState:keypressed(key)
-	if key == "escape" then
-		love.event.push("quit")
-	end
-	self.menu:keypressed(key)
+function MenuState:doMenuAction()
 	local choice = self.menu.selected
 	if choice == 1 then
 		self.level=1
@@ -139,6 +153,19 @@ function MenuState:keypressed(key)
 	elseif choice == 4 then
 		love.event.push("quit")
 	end
+end
+
+function MenuState:keypressed(key)
+	if key == "escape" then
+		love.event.push("quit")
+	end
+	self.menu:keypressed(key)
+	self:doMenuAction()
+end
+
+function MenuState:mousepressed(x,y,b)
+	self.menu:mousepressed(x,y,b)
+	self:doMenuAction()
 end
 
 local MainState = Game:addState('Main')
@@ -219,6 +246,9 @@ function Game:keypressed(key)
 	if key == "escape" then
 		self:pushState('Interupt')
 	end
+end
+
+function Game:mousepressed(x,y,b)
 end
 
 function Game.static:load(gsize)

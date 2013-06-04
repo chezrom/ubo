@@ -83,3 +83,29 @@ function Caption:keypressed(key)
 		end
 	end
 end
+
+function Caption:mousepressed(x,y,b)
+	if self.selected ~= 0 then
+		return
+	end
+	if x < self.x or y < self.y or x > self.x + self.w or y > self.y + self.h then
+		return
+	end
+	
+	local row = math.floor((y-self.y) / self.font:getHeight())
+	if row % 2 == 0 then
+		return
+	end
+	
+	local lid =  (row+1)/2
+	if lid < 1 or lid > #self.lines then
+		return
+	end
+	
+	local ox = math.abs(x - self.x - self.w/2)
+	if ox <= self.font:getWidth(self.lines[lid])/2 then
+		self.active = lid
+		self.selected = lid
+	end
+	
+end

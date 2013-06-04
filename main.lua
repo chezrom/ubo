@@ -38,11 +38,10 @@ function game_update(self,dt)
 	--]]
 end
 
+function love.mousepressed(x,y,b)
+	game:mousepressed(x,y,b)
+end
 
 function love.keypressed(key)
 	game:keypressed(key)
-	--[[if key == "escape" then
-		love.event.push("quit")
-	end
-	--]]
 end
