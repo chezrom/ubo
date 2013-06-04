@@ -9,12 +9,15 @@ Player.static.directions = {
 	{-1,0}
 }
 
+Player.static.reverse = {2,1,4,3}
+
 function Player:initialize(grid,x,y)
 	Mobile.initialize(self,grid,60,x,y)
 	
 	self.dir=1
 	self.move=false
 	self.haveTail = false
+	self.tailLen = 0
 end
 
 function Player:draw()
@@ -28,8 +31,10 @@ function Player:update(dt)
 			self.move = false
 			if self.grid:placeTail(self.x,self.y) then
 				self.haveTail = true
+				self.tailLen = self.tailLen + 1
 			elseif self.haveTail then
 				self.haveTail = false
+				self.tailLen = 0
 				self.grid:setEvent(Grid.EVENT_CLOSE)
 				return
 			end
@@ -54,6 +59,12 @@ function Player:update(dt)
 				newdir=3
 			end
 		end
+
+		if newdir ~= 0 and self.tailLen > 1 and Player.reverse[newdir] == self.dir then
+				-- anti reverse 
+				newdir = 0
+		end
+		
 		if newdir ~= 0 then
 			local deltaX,deltaY = Player.directions[newdir][1],Player.directions[newdir][2]
 			self.x = self.x + deltaX
