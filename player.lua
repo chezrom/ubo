@@ -1,5 +1,7 @@
 require 'mobile'
 
+local lg=love.graphics
+
 Player = Mobile:subclass('Player')
 
 Player.static.directions = {
@@ -21,7 +23,7 @@ function Player:initialize(grid,x,y)
 end
 
 function Player:draw()
-	love.graphics.drawq(Player.image,Player.quads[self.dir],self.act_x,self.act_y)
+	lg.draw(Player.image,Player.quads[self.dir],self.act_x,self.act_y)
 end
 
 function Player:update(dt)
@@ -112,10 +114,10 @@ function Player.static:load()
 		u = u + 1
 	end
 	
-	local img = love.graphics.newImage(pid)
+	local img = lg.newImage(pid)
 	Player.static.image = img
 	Player.static.quads={}
 	for i =1,4 do
-		Player.static.quads[i] = love.graphics.newQuad((i-1)*gsize,0,gsize,gsize,img:getWidth(),img:getHeight())
+		Player.static.quads[i] = lg.newQuad((i-1)*gsize,0,gsize,gsize,img:getWidth(),img:getHeight())
 	end	
 end

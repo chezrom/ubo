@@ -1,5 +1,7 @@
 require 'mobile'
 
+local lg=love.graphics
+
 Ubo = Mobile:subclass('Ubo')
 
 function Ubo:initialize(grid,x,y)
@@ -23,7 +25,7 @@ function Ubo:initialize(grid,x,y)
 end
 
 function Ubo:draw() 
-		love.graphics.drawq(Ubo.image,Ubo.quads[self.sp],self.act_x,self.act_y)
+		lg.draw(Ubo.image,Ubo.quads[self.sp],self.act_x,self.act_y)
 end
 
 function Ubo:animate(dt)
@@ -100,11 +102,11 @@ function Ubo.static:load()
 		
 	end
 
-	local img = love.graphics.newImage(qid)
+	local img = lg.newImage(qid)
 	Ubo.static.image = img
 	Ubo.static.quads={}
 	for i = 1,img:getWidth()/gsize do
-		Ubo.static.quads[i] = love.graphics.newQuad((i-1)*gsize,0,gsize,gsize,img:getWidth(),img:getHeight())
+		Ubo.static.quads[i] = lg.newQuad((i-1)*gsize,0,gsize,gsize,img:getWidth(),img:getHeight())
 	end
 
 end

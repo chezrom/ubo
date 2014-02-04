@@ -11,18 +11,20 @@ Grid.static.EVENT_SELF_HIT_TAIL = "YOU HIT THE UNFISHED WALL"
 Grid.static.EVENT_SELF_HIT_UBO  = "selfhitubo"
 Grid.static.EVENT_UBO_HIT_TAIL  = "AN UBO HITS THE UNFISHED WALL"
 
+local lg=love.graphics
+
 function Grid:initialize(ymin)
 	
-	self.hgrid = math.floor((love.graphics.getHeight() - ymin)/Grid.size)
-	self.wgrid = math.floor(love.graphics.getWidth()/Grid.size)
+	self.hgrid = math.floor((lg.getHeight() - ymin)/Grid.size)
+	self.wgrid = math.floor(lg.getWidth()/Grid.size)
 	
-	self.start_y = love.graphics.getHeight() - Grid.size * self.hgrid
+	self.start_y = lg.getHeight() - Grid.size * self.hgrid
 	self.start_x = 0
 	
 	self.map={}
 	self.player=nil
 	self.ubos={}
-	self.spriteBatch = love.graphics.newSpriteBatch(Grid.image,self.hgrid*self.wgrid)
+	self.spriteBatch = lg.newSpriteBatch(Grid.image,self.hgrid*self.wgrid)
 
 	self.event=nil
 	self.active=false	
@@ -46,7 +48,7 @@ function Grid:buildBatch()
 		for x=1,self.wgrid do
 			local c = self.map[y][x]
 			if c > 0 then
-				self.spriteBatch:addq(Grid.quads[c],(x-1)*Grid.size,(y-1)*Grid.size)
+				self.spriteBatch:add(Grid.quads[c],(x-1)*Grid.size,(y-1)*Grid.size)
 			end
 		end
 	end
@@ -105,20 +107,20 @@ end
 
 function Grid:draw()
 
-	love.graphics.setColor(120,120,120)
-	love.graphics.rectangle('fill',0,0,love.graphics.getWidth(),self.start_y)
+	lg.setColor(120,120,120)
+	lg.rectangle('fill',0,0,lg.getWidth(),self.start_y)
 	
 	if self.player then
-		love.graphics.setFont(Game.font)
-		love.graphics.setColor(Game.color)
-		love.graphics.print(string.format('LEVEL %2d : %2d %% CLAIMED',self.level,self.percent),20,0)
+		lg.setFont(Game.font)
+		lg.setColor(Game.color)
+		lg.print(string.format('LEVEL %2d : %2d %% CLAIMED',self.level,self.percent),20,0)
 	end
 
-	love.graphics.setColor(Grid.backgroundColor)
-	love.graphics.rectangle('fill',self.start_x,self.start_y,self.wgrid*Grid.size,self.hgrid*Grid.size)
+	lg.setColor(Grid.backgroundColor)
+	lg.rectangle('fill',self.start_x,self.start_y,self.wgrid*Grid.size,self.hgrid*Grid.size)
 
-	love.graphics.setColor(255,255,255)
-	love.graphics.draw(self.spriteBatch,self.start_x,self.start_y)
+	lg.setColor(255,255,255)
+	lg.draw(self.spriteBatch,self.start_x,self.start_y)
 
 	for iq = 1, #self.ubos do
 		self.ubos[iq]:draw()
@@ -132,7 +134,7 @@ end
 function Grid:placeTail(x,y)
 	if self.map[y][x] == 0 then
 		self.map[y][x] = 1
-		self.spriteBatch:addq(Grid.quads[1],(x-1)*Grid.size,(y-1)*Grid.size)
+		self.spriteBatch:add(Grid.quads[1],(x-1)*Grid.size,(y-1)*Grid.size)
 		return true
 	else
 		return false
@@ -271,12 +273,12 @@ function Grid.static:load(gsize)
 			end
 		end
 	end
-	local img = love.graphics.newImage(bid)
+	local img = lg.newImage(bid)
 	Grid.static.image = img
 	
 	Grid.static.quads={}
 	for i=1,#self.mapColor do
-		Grid.static.quads[i] = love.graphics.newQuad((i-1)*gsize,0,gsize,gsize,gsize*#self.mapColor,gsize)
+		Grid.static.quads[i] = lg.newQuad((i-1)*gsize,0,gsize,gsize,gsize*#self.mapColor,gsize)
 	end
 end
 	

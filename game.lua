@@ -4,12 +4,16 @@ require 'ubo'
 require 'grid'
 require 'caption'
 
+local lw = love.window
+local lg = love.graphics
+
 Stateful= require 'lib/stateful'
 
 Game = class('Game')
 Game:include(Stateful)
 
 local InteruptState = Game:addState('Interupt')
+
 
 function InteruptState:enteredState()
 	self.menu:setLines({"RESUME GAME","MAIN MENU","QUIT"})
@@ -52,16 +56,16 @@ end
 local SelectVideoState = Game:addState('Video')
 
 function SelectVideoState:enteredState()
-	local w,h,fs,_,_ = love.graphics.getMode()
+	local w,h,fs,_,_ = lw.getMode()
 	
-	local modes = love.graphics.getModes()
+	local modes = lw.getFullscreenModes()
 	table.sort(modes, function(a, b) return a.width*a.height < b.width*b.height end)   -- sort from smallest to largest
 	self.videoModes={}
 	local lines={}
 	local il=1
 	local cm=1
 	for _,md in ipairs(modes) do
-		if  love.graphics.checkMode(md.width,md.height, fs ) then
+		if  lw.checkMode(md.width,md.height, fs ) then
 			self.videoModes[il] = { width = md.width, height = md.height, fs=fs}
 			lines[il]=string.format('%dx%d',md.width,md.height)
 			if md.width == w and md.height == h then
@@ -91,7 +95,7 @@ function SelectVideoState:doMenuAction(key)
 		self:popState('Video')
 	elseif choice > 0 then
 		local vm = self.videoModes[choice]
-		if love.graphics.setMode( vm.width, vm.height, vm.fs ) then
+		if lw.setMode( vm.width, vm.height, vm.fs ) then
 			self.grid = Grid(20)
 			self.menuGrid = Grid(0)
 			self.menuGrid:startMain()
@@ -118,7 +122,7 @@ end
 
 local MenuState = Game:addState('Menu')
 function MenuState:enteredState()
-	local _,_,fs,_,_ = love.graphics.getMode()
+	local _,_,fs,_,_ = lw.getMode()
 	local l2 = "FULLSCREEN MODE"
 	if fs then
 		l2 = "WINDOW MODE"
@@ -144,7 +148,8 @@ function MenuState:doMenuAction()
 		self.grid:startLevel(self.level)
 		self:gotoState(nil)
 	elseif choice == 2 then
-		if love.graphics.toggleFullscreen() then
+		local isfs = lw.getFullscreen()
+		if lw.setFullscreen(not isfs) then
 			self:gotoState('Menu')
 		end
 	elseif choice == 3 then
@@ -252,8 +257,8 @@ function Game:mousepressed(x,y,b)
 end
 
 function Game.static:load(gsize)
-	Game.static.font  = love.graphics.newFont(18)
-	Game.static.menuFont  = love.graphics.newFont(24)
+	Game.static.font  = lg.newFont(18)
+	Game.static.menuFont  = lg.newFont(24)
 	Game.static.color ={255,255,255}
 	Game.static.TRANSITION_DELAY=3
 	Grid:load(gsize)	
