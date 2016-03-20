@@ -42,7 +42,7 @@ function Grid:setEvent(event)
 end
 
 function Grid:buildBatch()
-	self.spriteBatch:bind()
+	--self.spriteBatch:bind()
 	self.spriteBatch:clear()
 	for y=1,self.hgrid do
 		for x=1,self.wgrid do
@@ -52,7 +52,7 @@ function Grid:buildBatch()
 			end
 		end
 	end
-	self.spriteBatch:unbind()
+	--self.spriteBatch:unbind()
 end
 
 function Grid:getScreenCoord(x,y)

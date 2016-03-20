@@ -65,14 +65,14 @@ function SelectVideoState:enteredState()
 	local il=1
 	local cm=1
 	for _,md in ipairs(modes) do
-		if  lw.checkMode(md.width,md.height, fs ) then
+		--if  lw.checkMode(md.width,md.height, fs ) then
 			self.videoModes[il] = { width = md.width, height = md.height, fs=fs}
 			lines[il]=string.format('%dx%d',md.width,md.height)
 			if md.width == w and md.height == h then
 				cm = il
 			end
 			il=il+1
-		end
+		--end
 	end
 	lines[il]="RETURN TO MAIN MENU"
 	self.videoMenu:setLines(lines)
