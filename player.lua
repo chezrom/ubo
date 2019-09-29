@@ -93,7 +93,7 @@ function Player.static:load()
 
 	local gsize = Grid.size
 	local pid = love.image.newImageData(gsize*4,gsize)
-	local pc={255,50,200}
+	local pc={1,50/255,200/255}
 
 	for x=0,pid:getWidth()-1 do
 		for y=0,gsize-1 do
@@ -105,10 +105,10 @@ function Player.static:load()
 	
 	while 2*u <= gsize do
 		for j = u,gsize-1-u do
-			pid:setPixel(j,gsize-1-i,pc[1],pc[2],pc[3],255)
-			pid:setPixel(j+gsize,i,pc[1],pc[2],pc[3],255)
-			pid:setPixel(i+2*gsize,j,pc[1],pc[2],pc[3],255)
-			pid:setPixel(4*gsize-1-i,j,pc[1],pc[2],pc[3],255)
+			pid:setPixel(j,gsize-1-i,pc[1],pc[2],pc[3],1)
+			pid:setPixel(j+gsize,i,pc[1],pc[2],pc[3],1)
+			pid:setPixel(i+2*gsize,j,pc[1],pc[2],pc[3],1)
+			pid:setPixel(4*gsize-1-i,j,pc[1],pc[2],pc[3],1)
 		end
 		i = i + 1
 		u = u + 1

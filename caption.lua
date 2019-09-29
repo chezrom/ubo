@@ -1,8 +1,8 @@
 Caption = Mobile:subclass('Caption')
 
-Caption.static.color   = {255,255,255}
-Caption.static.activeColor = {255,255,0}
-Caption.static.bgColor     = {128,128,128,128}
+Caption.static.color   = {1,1,1}
+Caption.static.activeColor = {1,1,0}
+Caption.static.bgColor     = {.5,.5,.5,.5}
 
 function Caption:initialize(font)
 

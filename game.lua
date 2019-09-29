@@ -259,7 +259,7 @@ end
 function Game.static:load(gsize)
 	Game.static.font  = lg.newFont(18)
 	Game.static.menuFont  = lg.newFont(24)
-	Game.static.color ={255,255,255}
+	Game.static.color ={1,1,1}
 	Game.static.TRANSITION_DELAY=3
 	Grid:load(gsize)	
 end

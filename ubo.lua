@@ -94,8 +94,8 @@ function Ubo.static:load()
 		for x=0,gsize-1 do
 			for y = 0,gsize-1 do
 				if x >= bsize and x < (gsize - bsize) and y>=bsize and y <(gsize-bsize) then
-					qid:setPixel(x + i*gsize,y,u,u,0,255)
-					qid:setPixel(8*gsize -1 - x - i*gsize,y,u,u,0,255)
+					qid:setPixel(x + i*gsize,y,u/255,u/255,0,1)
+					qid:setPixel(8*gsize -1 - x - i*gsize,y,u/255,u/255,0,1)
 				end 
 			end
 		end

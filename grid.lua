@@ -1,8 +1,8 @@
 
 Grid = Mobile:subclass('Grid')
 
-Grid.static.mapColor={ {128,128,60},{0,0,0}, {128,0,0},{0,128,0},{0,0,128},{128,128,0},{128,0,128},{0,128,128} }
-Grid.static.backgroundColor={50,100,75}
+Grid.static.mapColor={ {.5,.5,60/255},{0,0,0}, {.5,0,0},{0,.5,0},{0,0,.5},{.5,.5,0},{.5,0,.5},{0,.5,.5} }
+Grid.static.backgroundColor={50/255,100/255,75/255}
 
 Grid.static.size = 16
 
