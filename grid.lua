@@ -107,7 +107,7 @@ end
 
 function Grid:draw()
 
-	lg.setColor(120,120,120)
+	lg.setColor(120/255,120/255,120/255)
 	lg.rectangle('fill',0,0,lg.getWidth(),self.start_y)
 	
 	if self.player then
@@ -119,7 +119,7 @@ function Grid:draw()
 	lg.setColor(Grid.backgroundColor)
 	lg.rectangle('fill',self.start_x,self.start_y,self.wgrid*Grid.size,self.hgrid*Grid.size)
 
-	lg.setColor(255,255,255)
+	lg.setColor(1,1,1)
 	lg.draw(self.spriteBatch,self.start_x,self.start_y)
 
 	for iq = 1, #self.ubos do
